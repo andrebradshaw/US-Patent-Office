@@ -6,12 +6,6 @@ function usStateSwitch(str){
     }
   }
 }
-async function multiFetchDoc(urls){
-    const response_arr = [];
-    let res = await Promise.all(urls.map(e => fetch(e)));
-    let text = await Promise.all(res.filter(r=> (r.status > 199 && r.status < 305)).map(e => e.text()));
-    return text.map(t=> new DOMParser().parseFromString(t,'text/html'));
-}
 async function handleMultiFetch(arr,type){
     let res = await Promise.all(arr.map(e => fetch(e.url,e.obj)));
     if(type == 'json') return await Promise.all(res.filter(r=> (r.status > 199 && r.status < 305)).map(e => e.json()));
@@ -24,7 +18,6 @@ async function handleMultiFetch(arr,type){
 
 async function getPatentAPI(queries){
     var docs = await handleMultiFetch(queries,'html');
-
     parsePatentSearchMultiRes(docs[0],queries);
 }
 
